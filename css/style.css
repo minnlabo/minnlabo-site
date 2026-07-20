@@ -1,0 +1,157 @@
+/*
+  signature: 事業カテゴリを「シモガシハウスの掲示板に貼られたお知らせ」として見せる。
+  washi-tape色は urushi(漆) / oak(木) / teal・mustard(昭和レトロ) の実素材から。
+  常に明るい単一配色（ダークモード非対応、ブランド色として固定）。
+*/
+:root{
+  --paper: #FFFFFF;
+  --paper-warm: #FBF7EE;
+  --ink: #2B2420;
+  --ink-soft: #6E6155;
+  --urushi: #B23A2E;
+  --oak: #C08A45;
+  --teal: #2E7D6B;
+  --mustard: #D99A2B;
+  --line: rgba(43,36,32,0.14);
+  color-scheme: light;
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:
+    radial-gradient(1px 1px at 24px 24px, rgba(43,36,32,0.05) 1px, transparent 0),
+    var(--paper);
+  background-size: 28px 28px, auto;
+  color:var(--ink);
+  font-family: "游ゴシック体","Yu Gothic","YuGothic","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; }
+:focus-visible{ outline:2px solid var(--urushi); outline-offset:3px; }
+h1,h2,h3{ margin:0; text-wrap:balance; }
+p{ margin:0; }
+ul{ margin:0; padding:0; list-style:none; }
+.wrap{ max-width:960px; margin:0 auto; padding-inline:28px; }
+@media (max-width:640px){ .wrap{ padding-inline:20px; } }
+
+/* ---------- Header ---------- */
+header{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.nav{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:16px; }
+.brand{ display:inline-flex; align-items:center; gap:11px; text-decoration:none; }
+.brand-mark{
+  width:36px; height:36px; border-radius:50%;
+  background:var(--urushi);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:15px; color:#fff; flex:none;
+  box-shadow: 2px 3px 0 rgba(43,36,32,0.12);
+}
+.brand-word{ font-size:16px; font-weight:700; letter-spacing:.1em; color:var(--ink); }
+.nav-links{ display:flex; gap:28px; font-size:14px; color:var(--ink-soft); flex-wrap:wrap; }
+.nav-links a{ text-decoration:none; color:inherit; border-bottom:1px solid transparent; padding-bottom:3px; transition:border-color .15s ease,color .15s ease; }
+.nav-links a:hover{ border-color:var(--urushi); color:var(--ink); }
+
+/* ---------- Hero ---------- */
+.hero{ padding-block:54px 46px; border-bottom:1px solid var(--line); }
+.eyebrow{
+  font-size:12.5px; letter-spacing:.22em; color:var(--teal); font-weight:700;
+  display:flex; align-items:center; gap:10px; margin-bottom:20px;
+}
+.eyebrow::before{ content:""; width:26px; height:2px; background:var(--teal); }
+.hero h1{ font-size:clamp(30px,4.6vw,45px); font-weight:800; letter-spacing:-.01em; margin-bottom:24px; }
+.hero h1 em{ font-style:normal; color:var(--urushi); }
+.hero p.lede{ max-width:46ch; color:var(--ink-soft); font-size:16.5px; }
+.hero-actions{ display:flex; gap:14px; margin-top:32px; flex-wrap:wrap; }
+
+.btn{
+  font-size:14px; font-weight:700; padding:12px 24px; border-radius:2px;
+  text-decoration:none; display:inline-block; border:1.5px solid transparent;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+}
+.btn-primary{ background:var(--urushi); color:#fff; box-shadow:3px 3px 0 rgba(43,36,32,0.14); }
+.btn-primary:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 rgba(43,36,32,0.16); }
+.btn-ghost{ border-color:var(--ink); color:var(--ink); }
+.btn-ghost:hover{ background:var(--ink); color:#fff; }
+@media (prefers-reduced-motion: reduce){ .btn{ transition:none; } }
+
+/* ---------- Section label ---------- */
+.section{ padding-block:54px; }
+.section + .section{ border-top:1px solid var(--line); }
+.section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:34px; flex-wrap:wrap; }
+.section-head h2{ font-weight:800; font-size:23px; letter-spacing:.01em; }
+.section-head .num{ font-size:12px; color:var(--ink-soft); letter-spacing:.08em; }
+.section-lede{ color:var(--ink-soft); font-size:14.5px; max-width:56ch; margin-top:-18px; margin-bottom:28px; }
+
+/* ---------- Business board: 掲示板に貼られたお知らせ ---------- */
+.board{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px 20px; padding-top:6px; }
+.tile{
+  background:var(--paper-warm); border:1px solid var(--line); padding:24px 22px 20px;
+  position:relative; display:flex; flex-direction:column; justify-content:space-between;
+  min-height:180px; box-shadow:0 1px 0 rgba(43,36,32,0.04);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.tile::before{
+  content:""; position:absolute; top:-11px; left:24px; width:56px; height:20px;
+  background:var(--tape, var(--teal)); opacity:.82; transform:rotate(-4deg);
+}
+.tile:nth-child(odd){ transform:rotate(-0.6deg); }
+.tile:nth-child(even){ transform:rotate(0.7deg); }
+.tile:hover{ transform:rotate(0deg) translateY(-3px); box-shadow:0 10px 22px rgba(43,36,32,0.12); }
+@media (prefers-reduced-motion: reduce){
+  .tile, .tile:nth-child(odd), .tile:nth-child(even){ transform:none; transition:none; }
+}
+.tile .kicker{ font-size:11px; letter-spacing:.14em; color:var(--tape,var(--teal)); margin-bottom:11px; font-weight:700; }
+.tile h3{ font-size:18px; margin:0 0 10px; font-weight:800; }
+.tile p{ font-size:13.5px; color:var(--ink-soft); margin:0 0 10px; }
+.tile ul{ margin:8px 0 0; font-size:13px; color:var(--ink-soft); }
+.tile li{ padding:4px 0; border-top:1px dashed var(--line); }
+.tile li:first-child{ border-top:none; }
+.tag-soon{
+  align-self:flex-start; font-size:10.5px; letter-spacing:.08em; color:var(--paper);
+  background:var(--ink); padding:3px 9px; margin-top:12px; font-weight:700;
+}
+.tile[data-tape="urushi"]{ --tape: var(--urushi); }
+.tile[data-tape="teal"]{ --tape: var(--teal); }
+.tile[data-tape="mustard"]{ --tape: var(--mustard); }
+.tile[data-tape="oak"]{ --tape: var(--oak); }
+@media (max-width:760px){ .board{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:480px){ .board{ grid-template-columns:1fr; } .tile:nth-child(odd),.tile:nth-child(even){ transform:none; } }
+
+/* ---------- Members: 名札 ---------- */
+.members{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.member{ position:relative; border:1px solid var(--line); padding:20px 18px 18px; background:var(--paper); }
+.member::before{ content:""; position:absolute; top:0; left:0; width:30px; height:6px; background:var(--tag,var(--teal)); }
+.member .name{ font-weight:800; font-size:16px; margin-bottom:6px; }
+.member .role{ font-size:12.5px; color:var(--tag,var(--teal)); letter-spacing:.04em; margin-bottom:9px; font-weight:700; }
+.member p{ font-size:13px; color:var(--ink-soft); }
+.member[data-tag="urushi"]{ --tag: var(--urushi); }
+.member[data-tag="oak"]{ --tag: var(--oak); }
+@media (max-width:640px){ .members{ grid-template-columns:1fr; } }
+
+/* ---------- Company box (会社概要) ---------- */
+.company-box{ background:var(--paper-warm); border:1px solid var(--line); padding:32px; }
+.company-box dl{ display:grid; grid-template-columns:150px 1fr; gap:14px 20px; }
+.company-box dt{ color:var(--ink-soft); font-weight:700; font-size:13.5px; }
+.company-box dd{ margin:0; font-size:14.5px; }
+.company-box .objectives{ margin-top:6px; }
+.company-box .objectives li{ padding:5px 0; border-top:1px dashed var(--line); font-size:13.5px; }
+.company-box .objectives li:first-child{ border-top:none; }
+@media (max-width:560px){ .company-box dl{ grid-template-columns:1fr; } .company-box dt{ margin-top:10px; } }
+
+/* ---------- Contact ---------- */
+.contact-box{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--paper-warm); border:1px solid var(--line); padding:28px 26px; }
+.contact-box .detail{ font-size:14px; color:var(--ink-soft); }
+.contact-box .detail strong{ display:block; color:var(--ink); font-size:16px; margin-bottom:4px; }
+
+/* ---------- Footer ---------- */
+footer{ padding:40px 0 60px; border-top:1px solid var(--line); margin-top:0; }
+.foot-row{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; font-size:12.5px; color:var(--ink-soft); }
+.foot-row a:hover{ color:var(--urushi); }
